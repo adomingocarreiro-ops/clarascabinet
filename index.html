@@ -830,7 +830,7 @@ function photoField(f){
     (f.img?'<button class="link" data-a="rmphoto">'+t('ph_remove')+'</button>':'')+'</div></div>'+'</div>';
 }
 function onlineBlock(f){
-  if(f.banner||f.name.trim().length<3)return '';
+  if(f.banner==='found_banner'||(f.brand+' '+f.name).trim().length<3)return '';
   var out='<button class="link" data-a="searchonline" style="align-self:flex-start"'+(S.searching?' disabled':'')+'>'+t(S.searching?'so_busy':'so_btn')+'</button>';
   if(f.onlineMsg)out+='<span class="hint">'+t(f.onlineMsg)+'</span>';
   if(f.online&&f.online.length){
@@ -842,7 +842,7 @@ function onlineBlock(f){
 }
 function searchOnline(){
   var f=S.form;if(!f||S.searching)return;
-  var q=f.name.trim();if(q.length<3)return;
+  var q=(f.brand+' '+f.name).replace(/\s+/g,' ').trim();if(q.length<3)return;
   S.searching=true;f.onlineMsg='';render(true);
   var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort();},8000);
   fetch('https://world.openbeautyfacts.org/cgi/search.pl?search_simple=1&action=process&json=1&page_size=6&fields=code,product_name,brands,quantity,categories&search_terms='+encodeURIComponent(q),ctl?{signal:ctl.signal}:{})
@@ -869,9 +869,9 @@ function formView(){
   }).join('');
   out+='<div class="form">'+
     photoField(f)+
-    '<div class="field"><label for="f-name">'+t('name')+'</label><input type="text" id="f-name" data-f="name" value="'+esc(f.name)+'" autocomplete="off">'+(f.mode==='new'?'<div class="sug-list" id="sug">'+sugHTML(f.name)+'</div><div class="sug-list" id="onl">'+onlineBlock(f)+'</div>':'')+(f.err?'<span class="err">'+t('name_required')+'</span>':'')+'</div>'+
+    '<div class="field"><label for="f-name">'+t('name')+'</label><input type="text" id="f-name" data-f="name" value="'+esc(f.name)+'" autocomplete="off">'+(f.mode==='new'?'<div class="sug-list" id="sug">'+sugHTML(f.name)+'</div>':'')+(f.err?'<span class="err">'+t('name_required')+'</span>':'')+'</div>'+
     '<div class="row2"><div class="field"><label for="f-brand">'+t('brand')+'</label><input type="text" id="f-brand" data-f="brand" value="'+esc(f.brand)+'" autocomplete="off"></div>'+
-    '<div class="field'+(unsure?' unsure':'')+'"><label for="f-size">'+t('size')+'</label><input type="text" id="f-size" data-f="size" value="'+esc(f.size)+'" autocomplete="off">'+(unsure?'<span class="hint">'+t('confirm_field')+'</span>':'')+'</div></div>'+
+    '<div class="field'+(unsure?' unsure':'')+'"><label for="f-size">'+t('size')+'</label><input type="text" id="f-size" data-f="size" value="'+esc(f.size)+'" autocomplete="off">'+(unsure?'<span class="hint">'+t('confirm_field')+'</span>':'')+'</div></div>'+(f.mode==='new'?'<div class="sug-list" id="onl">'+onlineBlock(f)+'</div>':'')+
     '<div class="field"><label for="f-bc">'+t('barcode')+'</label><div class="bcrow"><input type="text" inputmode="numeric" id="f-bc" data-f="barcode" value="'+esc(f.barcode)+'" autocomplete="off"><button class="btn small ghost" data-a="bcform">'+ic('scan')+t('bc_scan')+'</button></div>'+'<button class="link" data-a="bclookup">'+t('lk_btn')+'</button>'+'</div>'+
     '<div class="field"><span class="lbl">'+t('category')+'</span><div class="cats">'+cats+'</div></div>'+
     '<div class="field"><span class="lbl">'+t('status')+'</span><div class="seg" role="group">'+
@@ -1362,7 +1362,8 @@ document.addEventListener('input',function(e){
     if(el.type==='checkbox'){S.form.noOpened=el.checked;var od=$('#f-opened');if(od)od.disabled=el.checked;}
     else S.form[f]=el.value;
     if(f==='name'&&S.form.err&&el.value.trim()){S.form.err=false;}
-    if(f==='name'&&S.form.mode==='new'){var sg=$('#sug');if(sg)sg.innerHTML=sugHTML(el.value);var on=$('#onl');if(on){if(S.form.onlineMsg||S.form.online){S.form.onlineMsg='';S.form.online=null;}on.innerHTML=onlineBlock(S.form);}}
+    if(f==='name'&&S.form.mode==='new'){var sg=$('#sug');if(sg)sg.innerHTML=sugHTML(el.value);}
+    if((f==='name'||f==='brand')&&S.form.mode==='new'){var on=$('#onl');if(on){if(S.form.onlineMsg||S.form.online){S.form.onlineMsg='';S.form.online=null;}on.innerHTML=onlineBlock(S.form);}}
   }
 });
 document.addEventListener('change',function(e){
