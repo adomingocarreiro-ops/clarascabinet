@@ -351,6 +351,13 @@ html{color-scheme:light}body{margin:0}
 .bcrow .btn{white-space:nowrap}
 .btn.danger{color:var(--bad)}
 .muted{color:var(--muted)}
+.thumb img,.hero .hb img{object-fit:contain;background:#fff}
+.ov.live{padding:0;justify-content:flex-end;gap:12px;padding-bottom:20px;background:#000}
+.ov.live video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ov.live .guide{position:absolute;left:8%;right:8%;top:32%;height:26%;border:3px solid rgba(255,255,255,.85);border-radius:16px;box-shadow:0 0 0 9999px rgba(0,0,0,.35);pointer-events:none}
+.ov.live p,.ov.live .lbtns{position:relative;z-index:1}
+.ov.live p{background:rgba(0,0,0,.55);padding:6px 14px;border-radius:999px;font-size:14px}
+.ov.live .lbtns{display:flex;gap:10px}
 .brand{display:inline-flex;align-items:center;gap:8px}.brand .logo{width:30px;height:30px;flex:none}
 .obf a{color:var(--accent-fg);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 </style>
@@ -456,6 +463,7 @@ m_clear_q:'Delete everything on this device? This cannot be undone.',m_clear_yes
 m_import_q:'Replace what is on this device with the backup ({p} products)?',m_import_yes:'Yes, replace',
 m_import_bad:'That file is not a Clara\'s Cabinet backup.',m_exported:'Backup saved',m_imported:'Backup restored',m_cleared:'All data deleted',m_sample_done:'Sample products added',m_sample_have:'Sample products are already loaded',
 obf_credit_pre:'Contains data from',obf_credit_mid:'available under the Open Database License',obf_disclaimer:'This data is contributed by a community and may be incomplete or wrong. Always check the packaging. It must not be used for medical purposes.',
+live_hint:'Point the camera at the barcode',live_photo:'Use a photo instead',live_cam_err:'Could not open the camera. Allow camera access, or use a photo instead.',sug_cab:'In your cabinet',sug_cat:'In your catalogue',so_btn:'Search online',so_busy:'Searching...',so_none:'Nothing found online. Try other words.',so_err:'Could not reach the online database.',so_hint:'Pick a result to fill in the details',cl_btn:'Clean up photo',cl_undo:'Use original photo',cl_busy:'Cleaning...',cl_done:'Photo cleaned up',cl_tip:'Tip: plain light surface, daylight, product filling the frame. Then tap Clean up.',
 m_note:'Browsers can clear stored data. Save a backup now and then, and use it to move your data to another device.',
 m_storage_warn:'This browser is not saving your data. Try a normal window instead of private mode.',close:'Close'
 },es:{
@@ -520,6 +528,7 @@ m_clear_q:'¿Borrar todo en este dispositivo? No se puede deshacer.',m_clear_yes
 m_import_q:'¿Sustituir lo que hay en este dispositivo por la copia ({p} productos)?',m_import_yes:'Sí, sustituir',
 m_import_bad:'Ese archivo no es una copia de Clara\'s Cabinet.',m_exported:'Copia guardada',m_imported:'Copia restaurada',m_cleared:'Datos borrados',m_sample_done:'Productos de ejemplo añadidos',m_sample_have:'Los productos de ejemplo ya están cargados',
 obf_credit_pre:'Contiene datos de',obf_credit_mid:'disponibles bajo la Open Database License',obf_disclaimer:'Estos datos los aporta una comunidad y pueden estar incompletos o ser erróneos. Comprueba siempre el envase. No deben usarse con fines médicos.',
+live_hint:'Apunta la cámara al código de barras',live_photo:'Usar una foto',live_cam_err:'No se pudo abrir la cámara. Permite el acceso a la cámara o usa una foto.',sug_cab:'En tu armario',sug_cat:'En tu catálogo',so_btn:'Buscar en línea',so_busy:'Buscando...',so_none:'No se encontró nada en línea. Prueba con otras palabras.',so_err:'No se pudo conectar con la base de datos en línea.',so_hint:'Elige un resultado para rellenar los datos',cl_btn:'Mejorar foto',cl_undo:'Usar la foto original',cl_busy:'Mejorando...',cl_done:'Foto mejorada',cl_tip:'Consejo: superficie lisa y clara, luz natural y el producto llenando el encuadre. Luego pulsa Mejorar.',
 m_note:'Los navegadores pueden borrar los datos guardados. Guarda una copia de vez en cuando y úsala para llevar tus datos a otro dispositivo.',
 m_storage_warn:'Este navegador no está guardando tus datos. Prueba con una ventana normal en lugar del modo privado.',close:'Cerrar'
 }};
@@ -641,10 +650,21 @@ function catMatch(q){
   }
   return null;
 }
+function localMatches(q){
+  var tk=norm(q).split(/\s+/).filter(Boolean);if(!tk.length)return [];
+  var out=[];
+  S.catalog.forEach(function(c){
+    var full=norm(c.brand+' '+c.name);
+    for(var i=0;i<tk.length;i++){if(full.indexOf(tk[i])<0)return;}
+    out.push({c:c,r:(full.indexOf(tk[0])===0||norm(c.name).indexOf(tk[0])===0)?0:1});
+  });
+  out.sort(function(a,b){return a.r-b.r;});
+  return out.map(function(o){return o.c;});
+}
 function sugHTML(q){
   if(S.form&&S.form.banner)return '';
-  var nq=norm(q);if(nq.length<2)return '';
-  var m=S.catalog.filter(function(c){return norm(c.brand+' '+c.name).indexOf(nq)>-1;}).slice(0,4);
+  var nq=norm(q);if(nq.length<1)return '';
+  var m=localMatches(q).slice(0,4);
   return m.map(function(c){return '<button class="sug" data-a="pickcat" data-id="'+c.id+'">'+thumb(c)+'<div><b>'+esc(c.name)+'</b><span>'+esc(c.brand)+(c.size?' · '+esc(c.size):'')+'</span></div></button>';}).join('');
 }
 
@@ -807,7 +827,36 @@ function photoField(f){
   var inner=f.img?'<img src="'+f.img+'" alt="">':bottle(f.cat||'other',100);
   return '<div class="field"><span class="lbl">'+t('ph_label')+'</span><div class="photofield"><div class="thumb" style="background:'+tint(f.cat||'other')+'">'+inner+'</div>'+
     '<div class="pbtns"><button class="btn small ghost" data-a="pickphoto" data-v="form">'+ic('camera')+t(f.img?'ph_change':'ph_add')+'</button>'+
-    (f.img?'<button class="link" data-a="rmphoto">'+t('ph_remove')+'</button>':'')+'</div></div></div>';
+    (f.img&&!f.cleaned?'<button class="btn small" data-a="cleanphoto"'+(f.cleaning?' disabled':'')+'>'+t(f.cleaning?'cl_busy':'cl_btn')+'</button>':'')+
+    (f.cleaned?'<button class="link" data-a="undoclean">'+t('cl_undo')+'</button>':'')+
+    (f.img?'<button class="link" data-a="rmphoto">'+t('ph_remove')+'</button>':'')+'</div></div>'+(f.img&&!f.cleaned?'<span class="muted" style="font-size:13px">'+t('cl_tip')+'</span>':'')+'</div>';
+}
+function onlineBlock(f){
+  if(f.banner||f.name.trim().length<3)return '';
+  var out='<button class="link" data-a="searchonline" style="align-self:flex-start"'+(S.searching?' disabled':'')+'>'+t(S.searching?'so_busy':'so_btn')+'</button>';
+  if(f.onlineMsg)out+='<span class="hint">'+t(f.onlineMsg)+'</span>';
+  if(f.online&&f.online.length){
+    out+='<span class="muted" style="font-size:13px">'+t('so_hint')+'</span><div class="sug-list">'+f.online.map(function(o,i){
+      return '<button class="sug" data-a="pickonline" data-i="'+i+'"><div style="padding-left:8px"><b>'+esc(o.name)+'</b><span>'+esc(o.brand)+(o.size?' · '+esc(o.size):'')+'</span></div></button>';
+    }).join('')+'</div>';
+  }
+  return out;
+}
+function searchOnline(){
+  var f=S.form;if(!f||S.searching)return;
+  var q=f.name.trim();if(q.length<3)return;
+  S.searching=true;f.onlineMsg='';render(true);
+  var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort();},8000);
+  fetch('https://world.openbeautyfacts.org/cgi/search.pl?search_simple=1&action=process&json=1&page_size=6&fields=code,product_name,brands,quantity,categories&search_terms='+encodeURIComponent(q),ctl?{signal:ctl.signal}:{})
+    .then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http');return r.json();})
+    .then(function(j){
+      S.searching=false;if(S.form!==f)return;
+      var arr=(j&&j.products||[]).filter(function(x){return x&&x.product_name;}).map(function(x){
+        return {code:normCode(x.code),name:String(x.product_name).trim(),brand:String(x.brands||'').split(',')[0].trim(),size:x.quantity||'',cat:guessCat((x.product_name||'')+' '+(x.categories||''))};
+      });
+      f.online=arr;f.onlineMsg=arr.length?'':'so_none';render(true);
+    })
+    .catch(function(){clearTimeout(tm);S.searching=false;if(S.form===f){f.online=null;f.onlineMsg='so_err';render(true);}});
 }
 function formView(){
   var f=S.form,unsure=f.uncertain.indexOf('size')>-1;
@@ -822,7 +871,7 @@ function formView(){
   }).join('');
   out+='<div class="form">'+
     photoField(f)+
-    '<div class="field"><label for="f-name">'+t('name')+'</label><input type="text" id="f-name" data-f="name" value="'+esc(f.name)+'" autocomplete="off">'+(f.mode==='new'?'<div class="sug-list" id="sug">'+sugHTML(f.name)+'</div>':'')+(f.err?'<span class="err">'+t('name_required')+'</span>':'')+'</div>'+
+    '<div class="field"><label for="f-name">'+t('name')+'</label><input type="text" id="f-name" data-f="name" value="'+esc(f.name)+'" autocomplete="off">'+(f.mode==='new'?'<div class="sug-list" id="sug">'+sugHTML(f.name)+'</div><div class="sug-list" id="onl">'+onlineBlock(f)+'</div>':'')+(f.err?'<span class="err">'+t('name_required')+'</span>':'')+'</div>'+
     '<div class="row2"><div class="field"><label for="f-brand">'+t('brand')+'</label><input type="text" id="f-brand" data-f="brand" value="'+esc(f.brand)+'" autocomplete="off"></div>'+
     '<div class="field'+(unsure?' unsure':'')+'"><label for="f-size">'+t('size')+'</label><input type="text" id="f-size" data-f="size" value="'+esc(f.size)+'" autocomplete="off">'+(unsure?'<span class="hint">'+t('confirm_field')+'</span>':'')+'</div></div>'+
     '<div class="field"><label for="f-bc">'+t('barcode')+'</label><div class="bcrow"><input type="text" inputmode="numeric" id="f-bc" data-f="barcode" value="'+esc(f.barcode)+'" autocomplete="off"><button class="btn small ghost" data-a="bcform">'+ic('scan')+t('bc_scan')+'</button></div>'+'<button class="link" data-a="bclookup">'+t('lk_btn')+'</button>'+'</div>'+
@@ -916,9 +965,23 @@ function wishBtn(name){
   var has=S.wish.indexOf(name)>-1;
   return '<button class="btn ghost" data-a="wish" data-n="'+esc(name)+'"'+(has?' disabled':'')+'>'+(has?t('wish_in'):t('wish_add'))+'</button>';
 }
+function buySugHTML(q){
+  var nq=norm(q);if(!nq||isCode(q))return '';
+  var items=[],seen={},tk=nq.split(/\s+/).filter(Boolean);
+  groups().forEach(function(g){
+    var full=norm(g.brand+' '+g.name),ok=tk.every(function(w){return full.indexOf(w)>-1;});
+    if(ok){seen[gkey(g.items[0])]=1;items.push({p:g.items[0],tag:'sug_cab'});}
+  });
+  localMatches(q).forEach(function(c){if(!seen[gkey(c)]){seen[gkey(c)]=1;items.push({p:c,tag:'sug_cat'});}});
+  items=items.filter(function(it){return norm(it.p.brand+' '+it.p.name)!==nq&&norm(it.p.name)!==nq;}).slice(0,5);
+  if(!items.length)return '';
+  return '<div class="sug-list">'+items.map(function(it){
+    var p=it.p;return '<button class="sug" data-a="buysug" data-q="'+esc((p.brand+' '+p.name).trim())+'">'+thumb(p)+'<div><b>'+esc(p.name)+'</b><span>'+esc(p.brand)+(p.size?' · '+esc(p.size):'')+' · '+t(it.tag)+'</span></div></button>';
+  }).join('')+'</div>';
+}
 function resHTML(){
-  var q=S.buy.q.trim(),r=runSearch(q);
-  if(!r)return '<p class="empty">'+t('type_hint')+'</p>';
+  var q=S.buy.q.trim(),r=runSearch(q),bs=buySugHTML(q);
+  if(!r)return bs+(bs?'':'<p class="empty">'+t('type_hint')+'</p>');
   var out='';
   r.exact.forEach(function(g){
     var first=g.items.filter(function(p){return p.status==='opened';})[0]||g.items[0];
@@ -941,7 +1004,7 @@ function resHTML(){
     out+='<div class="rcard none"><span class="rbadge">'+t(cm||!code?'not_owned':'bc_unknown')+'</span><div class="nonebox">'+(cm?thumb(cm):'<div class="thumb" style="background:transparent;border:1px dashed var(--line)">'+bottle('other',0)+'</div>')+'<div><h3>'+esc(title)+'</h3><p class="muted">'+t(cm||!code?'not_owned_sub':'bc_unknown_sub')+'</p></div></div>'+
       '<div class="btns"><button class="btn" data-a="addfrom" data-q="'+esc(q)+'">'+t('add_to_cabinet')+'</button>'+((cm||!code)?wishBtn(cm?cm.name:q):'')+'</div></div>';
   }
-  return out;
+  return bs+out;
 }
 function buyView(){
   var wl=S.wish.length?'<div class="wl">'+S.wish.map(function(w){return '<span class="w">'+esc(w)+'<button data-a="unwish" data-n="'+esc(w)+'" aria-label="'+t('remove')+'">'+ic('x')+'</button></span>';}).join('')+'</div>':'<p class="muted">'+t('wish_empty')+'</p>';
@@ -977,6 +1040,75 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 window.addEventListener('pagehide',function(){if(S.loaded){clearTimeout(saveT);doSave();}});
 
 /* ---------- photos and barcodes ---------- */
+function cleanPhoto(url){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onerror=function(){res(url);};
+    im.onload=function(){
+      var k=Math.min(1,480/Math.max(im.width,im.height)),W=Math.max(2,Math.round(im.width*k)),H=Math.max(2,Math.round(im.height*k));
+      var c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.drawImage(im,0,0,W,H);
+      var d;try{d=x.getImageData(0,0,W,H);}catch(e){return res(url);}
+      var p=d.data,N=W*H,i,j;
+      var rs=[],gs=[],bs=[];
+      function samp(n){rs.push(p[n*4]);gs.push(p[n*4+1]);bs.push(p[n*4+2]);}
+      for(i=0;i<W;i++){samp(i);samp((H-1)*W+i);}
+      for(j=0;j<H;j++){samp(j*W);samp(j*W+W-1);}
+      function med(a){a.sort(function(u,v){return u-v;});return a[a.length>>1];}
+      var br=med(rs),bg=med(gs),bb=med(bs);
+      function dist(n,r,g,b){var dr=p[n*4]-r,dg=p[n*4+1]-g,db=p[n*4+2]-b;return Math.sqrt(dr*dr+dg*dg+db*db);}
+      var mask=new Uint8Array(N),stack=[];
+      function seed(n){if(!mask[n]&&dist(n,br,bg,bb)<60){mask[n]=1;stack.push(n);}}
+      for(i=0;i<W;i++){seed(i);seed((H-1)*W+i);}
+      for(j=0;j<H;j++){seed(j*W);seed(j*W+W-1);}
+      while(stack.length){
+        var q=stack.pop(),qx=q%W,qy=(q-qx)/W,nb=[];
+        if(qx>0)nb.push(q-1);if(qx<W-1)nb.push(q+1);if(qy>0)nb.push(q-W);if(qy<H-1)nb.push(q+W);
+        for(var a=0;a<nb.length;a++){
+          var n2=nb[a];if(mask[n2])continue;
+          var db0=dist(n2,br,bg,bb);
+          if(db0<60||(db0<110&&dist(n2,p[q*4],p[q*4+1],p[q*4+2])<9)){mask[n2]=1;stack.push(n2);}
+        }
+      }
+      var cnt=0;for(i=0;i<N;i++)cnt+=mask[i];
+      var useMask=cnt>N*0.12&&cnt<N*0.97,minx=0,miny=0,maxx=W-1,maxy=H-1;
+      if(useMask){
+        var cc=new Uint16Array(W),rc=new Uint16Array(H);
+        for(j=0;j<H;j++)for(i=0;i<W;i++){if(!mask[j*W+i]){cc[i]++;rc[j]++;}}
+        minx=0;while(minx<W-1&&cc[minx]<3)minx++;maxx=W-1;while(maxx>0&&cc[maxx]<3)maxx--;
+        miny=0;while(miny<H-1&&rc[miny]<3)miny++;maxy=H-1;while(maxy>0&&rc[maxy]<3)maxy--;
+        if(maxx-minx<8||maxy-miny<8){useMask=false;minx=0;miny=0;maxx=W-1;maxy=H-1;}
+        else for(i=0;i<N;i++){if(mask[i]){p[i*4]=255;p[i*4+1]=255;p[i*4+2]=255;}}
+      }
+      x.putImageData(d,0,0);
+      var bw=maxx-minx+1,bh=maxy-miny+1,S2=480,box=useMask?384:440,s=Math.min(box/bw,box/bh);
+      var o=document.createElement('canvas');o.width=S2;o.height=S2;var ox=o.getContext('2d');
+      ox.fillStyle='#fff';ox.fillRect(0,0,S2,S2);ox.imageSmoothingQuality='high';
+      ox.drawImage(c,minx,miny,bw,bh,(S2-bw*s)/2,(S2-bh*s)/2,bw*s,bh*s);
+      var od=ox.getImageData(0,0,S2,S2),q2=od.data,hist=new Uint32Array(256),tot=0;
+      for(i=0;i<q2.length;i+=4){var l=(q2[i]*0.3+q2[i+1]*0.59+q2[i+2]*0.11)|0;if(l<250){hist[l]++;tot++;}}
+      if(tot>500){
+        var acc=0,lo=0,hi=255;
+        for(i=0;i<250;i++){acc+=hist[i];if(acc>=tot*0.01){lo=i;break;}}
+        acc=0;for(i=249;i>=0;i--){acc+=hist[i];if(acc>=tot*0.01){hi=i;break;}}
+        lo=Math.min(lo,50);hi=Math.max(hi,190);
+        var gain=255/(hi-lo);
+        for(i=0;i<q2.length;i+=4){for(var ch=0;ch<3;ch++){var v=(q2[i+ch]-lo)*gain;q2[i+ch]=v<0?0:(v>255?255:v);}}
+        ox.putImageData(od,0,0);
+      }
+      var out;try{out=o.toDataURL('image/jpeg',0.88);}catch(e2){out=url;}
+      res(out);
+    };
+    im.src=url;
+  });
+}
+function cleanForm(){
+  var f=S.form;if(!f||!f.img||f.cleaning)return;
+  f.cleaning=true;render(true);
+  cleanPhoto(f.img).then(function(u){
+    if(S.form!==f)return;
+    f.cleaning=false;f.imgOrig=f.img;f.img=u;f.cleaned=true;render(true);toast(t('cl_done'));
+  });
+}
 function readPhoto(file,cb){
   if(!file)return;
   var fr=new FileReader();
@@ -1051,13 +1183,56 @@ function lookupInto(code,fromForm){
     else{S.form=blankForm(info);go('form');}
   });
 }
+var live={stream:null,timer:null,busy:false,det:null,rd:null,cv:null};
+function liveHTML(){
+  return '<div class="ov live"><video id="lv" playsinline muted autoplay></video><div class="guide"></div><p id="lvmsg">'+t('live_hint')+'</p><div class="lbtns"><button class="btn ghost" data-a="livephoto">'+t('live_photo')+'</button><button class="btn" data-a="liveclose">'+t('cancel')+'</button></div></div>';
+}
+function stopLive(){
+  clearInterval(live.timer);live.timer=null;live.busy=false;
+  if(live.stream){live.stream.getTracks().forEach(function(tr){tr.stop();});live.stream=null;}
+  S.live=null;renderOverlay();
+}
+function startLive(ctx){
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){S.photoCtx=ctx;$('#bcf').click();return;}
+  S.live={ctx:ctx};renderOverlay();
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false}).then(function(st){
+    if(!S.live){st.getTracks().forEach(function(tr){tr.stop();});return;}
+    live.stream=st;var v=$('#lv');v.srcObject=st;var pl=v.play();if(pl&&pl.catch)pl.catch(function(){});
+    live.det=null;
+    try{if(window.BarcodeDetector&&!window.__noDetector)live.det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128']});}catch(e){live.det=null;}
+    live.rd=null;
+    if(window.ZXing){var Z=ZXing,h=new Map();h.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.EAN_13,Z.BarcodeFormat.EAN_8,Z.BarcodeFormat.UPC_A,Z.BarcodeFormat.UPC_E,Z.BarcodeFormat.CODE_128]);h.set(Z.DecodeHintType.TRY_HARDER,true);live.rd=new Z.MultiFormatReader();live.rd.setHints(h);}
+    live.timer=setInterval(function(){liveTick(v);},220);
+  }).catch(function(){var m=$('#lvmsg');if(m)m.textContent=t('live_cam_err');});
+}
+function liveTick(v){
+  if(live.busy||!S.live||!v||v.readyState<2||!v.videoWidth)return;
+  live.busy=true;
+  function done(code){live.busy=false;if(code&&S.live){var cx=S.live.ctx;stopLive();gotCode(normCode(code),cx);}}
+  function viaZ(){
+    try{
+      var k=Math.min(1,1000/v.videoWidth),c=live.cv||(live.cv=document.createElement('canvas'));
+      c.width=Math.round(v.videoWidth*k);c.height=Math.round(v.videoHeight*k);
+      c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+      var Z=ZXing,bm=new Z.BinaryBitmap(new Z.HybridBinarizer(new Z.HTMLCanvasElementLuminanceSource(c)));
+      done(live.rd.decode(bm).getText());
+    }catch(e){done(null);}
+  }
+  if(live.det){live.det.detect(v).then(function(r){if(r&&r[0])done(r[0].rawValue);else done(null);}).catch(function(){live.det=null;live.busy=false;});}
+  else if(live.rd)viaZ();else live.busy=false;
+}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&S.live)stopLive();});
 function handleBarcode(file,ctx){
   if(!file)return;
   S.scan={kind:'barcode'};renderOverlay();
   decodeBarcode(file).then(function(raw){
     S.scan=null;renderOverlay();
     if(!raw){toast(t('bc_err'));return;}
-    var code=normCode(raw);
+    gotCode(normCode(raw),ctx);
+  });
+}
+function gotCode(code,ctx){
+  {
     if(ctx==='addscan'){
       var c=findByBarcode(code);
       if(c){S.form=blankForm(fromCat(c));go('form');}else lookupInto(code,false);
@@ -1070,7 +1245,7 @@ function handleBarcode(file,ctx){
     }else if(ctx==='buy'){
       S.buy.q=code;render(true);
     }
-  });
+  }
 }
 
 /* ---------- sample products (optional) ---------- */
@@ -1133,6 +1308,7 @@ function renderNav(){
 }
 function renderOverlay(){
   var o=$('#ov');
+  if(S.live){if(!$('#lv'))o.innerHTML=liveHTML();return;}
   if(!S.scan){o.innerHTML='';return;}
   o.innerHTML='<div class="ov" role="status"><div class="stack"><div class="frame bc"><div class="line"></div></div><div class="corners"></div></div><p>'+t(S.scan.kind==='lookup'?'lk_wait':'bc_reading')+'</p></div>';
 }
@@ -1195,7 +1371,7 @@ document.addEventListener('click',function(e){
     case 'method':
       if(v==='manual'){S.form=blankForm();go('form');}
       else if(v==='photo'){S.photoCtx='add';$('#pfc').click();}
-      else{S.photoCtx='addscan';$('#bcf').click();}
+      else startLive('addscan');
       break;
     case 'fstatus':S.form.status=v;render(true);break;
     case 'fcat':S.form.cat=(S.form.cat===v?'':v);render(true);break;
@@ -1212,7 +1388,8 @@ document.addEventListener('click',function(e){
     case 'brand':S.brand=(S.brand===v?'':v);render(true);break;
     case 'view':S.view=v;render(true);break;
     case 'buyagain':{var bp=byId(S.sel);if(bp){S.buy.q=bp.barcode||bp.name;tabTo('buy');}break;}
-    case 'buyscan':S.photoCtx='buy';$('#bcf').click();break;
+    case 'buyscan':startLive('buy');break;
+    case 'buysug':S.buy.q=el.dataset.q;{var bqi=$('#bq');if(bqi)bqi.value=S.buy.q;}$('#res').innerHTML=resHTML();break;
     case 'addfrom':{
       var q=el.dataset.q,cm=catMatch(q);
       if(!cm&&isCode(q)){lookupInto(normCode(q),false);break;}
@@ -1223,9 +1400,15 @@ document.addEventListener('click',function(e){
     case 'lang':S.lang=v;render(true);break;
     case 'pickcat':{var pc=catById(id);if(pc){S.form=blankForm(fromCat(pc));render(true);}break;}
     case 'pickphoto':S.photoCtx=v;$('#pf').click();break;
-    case 'rmphoto':S.form.img=null;render(true);break;
+    case 'rmphoto':S.form.img=null;S.form.imgOrig=null;S.form.cleaned=false;render(true);break;
     case 'bclookup':if(S.form&&isCode(S.form.barcode))lookupInto(normCode(S.form.barcode),true);else toast(t('bc_err'));break;
-    case 'bcform':S.photoCtx='form';$('#bcf').click();break;
+    case 'bcform':startLive('form');break;
+    case 'searchonline':searchOnline();break;
+    case 'pickonline':{var oo=S.form&&S.form.online&&S.form.online[+el.dataset.i];if(oo){var kp=S.form.img;Object.assign(S.form,{name:oo.name,brand:oo.brand,size:oo.size,barcode:oo.code,cat:oo.cat||S.form.cat,banner:'obf_banner',uncertain:['size'],src:'obf',online:null,onlineMsg:''});S.form.img=kp;render(true);}break;}
+    case 'liveclose':stopLive();break;
+    case 'livephoto':{var lc=S.live&&S.live.ctx;stopLive();S.photoCtx=lc||'addscan';$('#bcf').click();break;}
+    case 'cleanphoto':cleanForm();break;
+    case 'undoclean':if(S.form&&S.form.imgOrig){S.form.img=S.form.imgOrig;S.form.imgOrig=null;S.form.cleaned=false;render(true);}break;
     case 'menu':S.menu=!S.menu;S.confirm='';S.importPending=null;renderSheet();break;
     case 'menuclose':S.menu=false;S.confirm='';S.importPending=null;renderSheet();break;
     case 'export':downloadBackup();break;
@@ -1252,7 +1435,7 @@ document.addEventListener('input',function(e){
     if(el.type==='checkbox'){S.form.noOpened=el.checked;var od=$('#f-opened');if(od)od.disabled=el.checked;}
     else S.form[f]=el.value;
     if(f==='name'&&S.form.err&&el.value.trim()){S.form.err=false;}
-    if(f==='name'&&S.form.mode==='new'){var sg=$('#sug');if(sg)sg.innerHTML=sugHTML(el.value);}
+    if(f==='name'&&S.form.mode==='new'){var sg=$('#sug');if(sg)sg.innerHTML=sugHTML(el.value);var on=$('#onl');if(on){if(S.form.onlineMsg||S.form.online){S.form.onlineMsg='';S.form.online=null;}on.innerHTML=onlineBlock(S.form);}}
   }
 });
 document.addEventListener('change',function(e){
@@ -1263,7 +1446,7 @@ document.addEventListener('change',function(e){
     var file=el.files&&el.files[0];el.value='';
     readPhoto(file,function(url){
       if(S.photoCtx==='add'){S.form=blankForm({img:url,banner:'photo_manual_banner'});go('form');}
-      else if(S.photoCtx==='form'&&S.form){S.form.img=url;render(true);}
+      else if(S.photoCtx==='form'&&S.form){S.form.img=url;S.form.imgOrig=null;S.form.cleaned=false;render(true);}
       else if(S.photoCtx==='detail'){var p=byId(S.sel);if(p){p.img=url;upsertCatalog(p);toast(t('saved_toast'));render(true);}}
     });
   }
@@ -1280,6 +1463,7 @@ document.addEventListener('change',function(e){
   }
 });
 document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&S.live){stopLive();return;}
   if(e.key==='Escape'&&S.menu){S.menu=false;S.confirm='';S.importPending=null;renderSheet();}
 });
 
