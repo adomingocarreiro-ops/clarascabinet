@@ -428,7 +428,7 @@ barcode:'Barcode (optional)',bc_scan:'Scan from photo',bc_err:'We could not read
 pao:'PAO (months after opening)',pao_none:'None / not shown',pao_m:'{n} months',printed:'Printed expiry date (optional)',
 confirm_field:'Please confirm this',save:'Save product',save_another:'Save and add another',save_changes:'Save changes',cancel:'Cancel',
 name_required:'Add a name to save.',min_note:'Only the name and status are required.',
-cat_cleanser:'Cleanser',cat_toner:'Toner',cat_serum:'Serum',cat_moisturiser:'Moisturiser',cat_sunscreen:'Sunscreen',cat_eye:'Eye care',cat_lip:'Lip care',cat_mask:'Mask',cat_body:'Body care',cat_deodorant:'Deodorant',cat_other:'Other',
+cat_cleanser:'Cleanser',cat_toner:'Toner',cat_serum:'Serum',cat_moisturiser:'Moisturiser',cat_sunscreen:'Sunscreen',cat_eye:'Eye care',cat_lip:'Lip care',cat_mask:'Mask',cat_body:'Body care',cat_deodorant:'Deodorant',cat_shampoo:'Shampoo',cat_conditioner:'Conditioner',cat_hairtreat:'Hair treatment',cat_hairstyle:'Hair styling',cat_other:'Other',
 ph_label:'Photo',ph_add:'Add photo',ph_change:'Change photo',ph_remove:'Remove photo',ph_err:'We could not read that image. Try another one.',
 purchased:'Purchased',not_opened:'Not opened',not_set:'Not set',pao_row:'PAO',printed_row:'Printed expiry',opened_row:'Opened',barcode_row:'Barcode',
 review_by:'Review by',no_date:'No date yet',no_date_sub:'Add the opening date and PAO to get a review date.',add_date:'Add a date',
@@ -493,7 +493,7 @@ barcode:'Código de barras (opcional)',bc_scan:'Escanear desde foto',bc_err:'No 
 pao:'PAO (meses tras abrir)',pao_none:'Ninguno / no aparece',pao_m:'{n} meses',printed:'Fecha de caducidad impresa (opcional)',
 confirm_field:'Confirma este dato',save:'Guardar producto',save_another:'Guardar y añadir otro',save_changes:'Guardar cambios',cancel:'Cancelar',
 name_required:'Añade un nombre para guardar.',min_note:'Solo hacen falta el nombre y el estado.',
-cat_cleanser:'Limpiador',cat_toner:'Tónico',cat_serum:'Sérum',cat_moisturiser:'Hidratante',cat_sunscreen:'Protector solar',cat_eye:'Contorno de ojos',cat_lip:'Labios',cat_mask:'Mascarilla',cat_body:'Cuerpo',cat_deodorant:'Desodorante',cat_other:'Otro',
+cat_cleanser:'Limpiador',cat_toner:'Tónico',cat_serum:'Sérum',cat_moisturiser:'Hidratante',cat_sunscreen:'Protector solar',cat_eye:'Contorno de ojos',cat_lip:'Labios',cat_mask:'Mascarilla',cat_body:'Cuerpo',cat_deodorant:'Desodorante',cat_shampoo:'Champú',cat_conditioner:'Acondicionador',cat_hairtreat:'Tratamiento capilar',cat_hairstyle:'Peinado',cat_other:'Otro',
 ph_label:'Foto',ph_add:'Añadir foto',ph_change:'Cambiar foto',ph_remove:'Quitar foto',ph_err:'No pudimos leer esa imagen. Prueba con otra.',
 purchased:'Comprado',not_opened:'Sin abrir',not_set:'Sin indicar',pao_row:'PAO',printed_row:'Caducidad impresa',opened_row:'Abierto',barcode_row:'Código de barras',
 review_by:'Revisar antes de',no_date:'Aún sin fecha',no_date_sub:'Añade la fecha de apertura y el PAO para obtener una fecha de revisión.',add_date:'Añadir fecha',
@@ -593,7 +593,7 @@ bottle:{y0:22,y1:60,body:'M12 28a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6
 tube:{y0:20,y1:58,body:'M13 20h22l-2 38H15z',top:'<rect x="16" y="8" width="16" height="12" rx="2"/><path d="M15 54h18"/>'},
 stick:{y0:24,y1:58,body:'M16 26a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v28a4 4 0 0 1-4 4H20a4 4 0 0 1-4-4z',top:'<path d="M17 24v-6a7 7 0 0 1 14 0v6"/>'}
 };
-var CATS=[['cleanser','pump','--l4'],['toner','bottle','--l1'],['serum','dropper','--l3'],['moisturiser','jar','--l2'],['sunscreen','tube','--l3'],['eye','jar','--l5'],['lip','stick','--l2'],['mask','jar','--l1'],['body','jar','--l3'],['deodorant','stick','--l5'],['other','bottle','--l4']];
+var CATS=[['cleanser','pump','--l4'],['toner','bottle','--l1'],['serum','dropper','--l3'],['moisturiser','jar','--l2'],['sunscreen','tube','--l3'],['eye','jar','--l5'],['lip','stick','--l2'],['mask','jar','--l1'],['body','jar','--l3'],['deodorant','stick','--l5'],['shampoo','pump','--l1'],['conditioner','bottle','--l5'],['hairtreat','dropper','--l2'],['hairstyle','tube','--l4'],['other','bottle','--l4']];
 function catInfo(c){for(var i=0;i<CATS.length;i++){if(CATS[i][0]===c)return CATS[i];}return CATS[CATS.length-1];}
 function catIndex(c){for(var i=0;i<CATS.length;i++){if(CATS[i][0]===c)return i;}return CATS.length-1;}
 var bid=0;
@@ -1083,7 +1083,7 @@ function decodeBarcode(file){
   });
 }
 function guessCat(txt){
-  var x=norm(txt),m=[['sunscreen',/sun|spf|solar|protect/],['deodorant',/deodor/],['lip',/\blip|labio/],['eye',/eye|ojo|contour/],['mask',/mask|mascar/],['cleanser',/cleans|wash|limpi|foam|micell/],['toner',/toner|tonic|essence/],['serum',/serum/],['moisturiser',/moistur|cream|crema|lotion|hidrat|gel/],['body',/body|corpor/]];
+  var x=norm(txt),m=[['shampoo',/shampoo|champu/],['conditioner',/conditioner|acondicionador/],['hairtreat',/hair (mask|oil|treatment|serum)|mascarilla capilar|aceite capilar|tratamiento capilar|hair care/],['hairstyle',/hair ?(spray|gel|wax|cream)|styling|laca|cera capilar/],['sunscreen',/sun|spf|solar|protect/],['deodorant',/deodor/],['lip',/\blip|labio/],['eye',/eye|ojo|contour/],['mask',/mask|mascar/],['cleanser',/cleans|wash|limpi|foam|micell/],['toner',/toner|tonic|essence/],['serum',/serum/],['moisturiser',/moistur|cream|crema|lotion|hidrat|gel/],['body',/body|corpor/]];
   for(var i=0;i<m.length;i++){if(m[i][1].test(x))return m[i][0];}
   return '';
 }
