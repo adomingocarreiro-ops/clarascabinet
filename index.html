@@ -351,6 +351,15 @@ html{color-scheme:light}body{margin:0}
 .bcrow .btn{white-space:nowrap}
 .btn.danger{color:var(--bad)}
 .muted{color:var(--muted)}
+.stars{display:inline-flex;gap:2px}.stars .st{width:18px;height:18px;fill:none;stroke:var(--warn);stroke-width:1.6;stroke-linejoin:round}.stars .st.on{fill:#E6B94D;stroke:#B8892B}
+.starrow{display:flex;gap:4px}.starb{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.starb svg{width:26px;height:26px;fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linejoin:round}.starb.on svg{fill:#E6B94D;stroke:#B8892B}
+.field textarea{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:10px 12px;font-size:16px;width:100%;resize:vertical;min-height:84px}.field textarea:focus{border-color:var(--accent);outline:none}
+.rvcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px}.rvcard p{overflow-wrap:anywhere}
+.rvline{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:14px}.rvt{font-weight:600}.rvc{flex-basis:100%;color:var(--muted);overflow-wrap:anywhere}
+.wlist{display:flex;flex-direction:column;gap:10px}.wcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:10px}
+.wtop{display:flex;gap:12px;align-items:flex-start}.wtop .m{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;align-items:flex-start}.wtop .m b{font-weight:600;overflow-wrap:anywhere}.wtop .m span:not(.chip){font-size:13px;color:var(--muted)}
+.hub.wtile{background:var(--p2)}
 .thumb img,.hero .hb img{object-fit:contain;background:#fff}
 .ov.live{padding:0;justify-content:flex-end;gap:12px;padding-bottom:20px;background:#000}
 .ov.live video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -464,6 +473,7 @@ m_import_q:'Replace what is on this device with the backup ({p} products)?',m_im
 m_import_bad:'That file is not a Clara\'s Cabinet backup.',m_exported:'Backup saved',m_imported:'Backup restored',m_cleared:'All data deleted',m_sample_done:'Sample products added',m_sample_have:'Sample products are already loaded',
 obf_credit_pre:'Contains data from',obf_credit_mid:'available under the Open Database License',obf_disclaimer:'This data is contributed by a community and may be incomplete or wrong. Always check the packaging. It must not be used for medical purposes.',
 live_hint:'Point the camera at the barcode',live_photo:'Use a photo instead',live_cam_err:'Could not open the camera. Allow camera access, or use a photo instead.',sug_cab:'In your cabinet',sug_cat:'In your catalogue',so_btn:'Search online',so_busy:'Searching...',so_none:'Nothing found online. Try other words.',so_err:'Could not reach the online database.',so_hint:'Pick a result to fill in the details',
+rate_label:'Your rating',comment_label:'Comment',comment_ph:'What did you think? Texture, scent, results...',rv_title:'Your review',rv_add:'Add a rating or comment',rv_rated:'You rated it',rv_last:'You rated it last time',wish_sub:'Products you want to buy. Search by name or scan a barcode.',wish_ph:'Search or add a product',wish_dup:'Already in your wishlist',wish_empty2:'Your wishlist is empty. Search above to add a product.',wish_bought:'Bought it, add to my cabinet',wish_open_sub:'Save products you want to buy later',wish_n:'{n} saved',wish_own:'You already own this',wish_similar:'You own something similar',wish_type:'Add "{q}" as typed',wish_code:'Look up barcode {q}',wish_online:'Search online databases',
 m_note:'Browsers can clear stored data. Save a backup now and then, and use it to move your data to another device.',
 m_storage_warn:'This browser is not saving your data. Try a normal window instead of private mode.',close:'Close'
 },es:{
@@ -529,6 +539,7 @@ m_import_q:'¿Sustituir lo que hay en este dispositivo por la copia ({p} product
 m_import_bad:'Ese archivo no es una copia de Clara\'s Cabinet.',m_exported:'Copia guardada',m_imported:'Copia restaurada',m_cleared:'Datos borrados',m_sample_done:'Productos de ejemplo añadidos',m_sample_have:'Los productos de ejemplo ya están cargados',
 obf_credit_pre:'Contiene datos de',obf_credit_mid:'disponibles bajo la Open Database License',obf_disclaimer:'Estos datos los aporta una comunidad y pueden estar incompletos o ser erróneos. Comprueba siempre el envase. No deben usarse con fines médicos.',
 live_hint:'Apunta la cámara al código de barras',live_photo:'Usar una foto',live_cam_err:'No se pudo abrir la cámara. Permite el acceso a la cámara o usa una foto.',sug_cab:'En tu armario',sug_cat:'En tu catálogo',so_btn:'Buscar en línea',so_busy:'Buscando...',so_none:'No se encontró nada en línea. Prueba con otras palabras.',so_err:'No se pudo conectar con la base de datos en línea.',so_hint:'Elige un resultado para rellenar los datos',
+rate_label:'Tu valoración',comment_label:'Comentario',comment_ph:'¿Qué te pareció? Textura, olor, resultados...',rv_title:'Tu opinión',rv_add:'Añadir valoración o comentario',rv_rated:'Lo valoraste',rv_last:'La última vez lo valoraste',wish_sub:'Productos que quieres comprar. Busca por nombre o escanea un código.',wish_ph:'Busca o añade un producto',wish_dup:'Ya está en tu lista de deseos',wish_empty2:'Tu lista de deseos está vacía. Busca arriba para añadir un producto.',wish_bought:'Ya lo compré, añadir a mi armario',wish_open_sub:'Guarda los productos que quieres comprar más adelante',wish_n:'{n} guardados',wish_own:'Ya lo tienes',wish_similar:'Tienes algo parecido',wish_type:'Añadir "{q}" tal cual',wish_code:'Buscar el código {q}',wish_online:'Buscar en bases de datos en línea',
 m_note:'Los navegadores pueden borrar los datos guardados. Guarda una copia de vez en cuando y úsala para llevar tus datos a otro dispositivo.',
 m_storage_warn:'Este navegador no está guardando tus datos. Prueba con una ventana normal en lugar del modo privado.',close:'Cerrar'
 }};
@@ -548,7 +559,7 @@ function normCode(c){c=String(c||'').replace(/\D/g,'');if(c.length===12)c='0'+c;
 function isCode(q){return /^\d{8,14}$/.test(normCode(q));}
 function uid2(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 
-var S={lang:'en',screen:'home',tab:'home',hist:[],products:[],catalog:[],sel:null,q:'',brand:'',view:'list',form:null,
+var S={wq:'',wonline:null,wmsg:'',wsearching:false,lang:'en',screen:'home',tab:'home',hist:[],products:[],catalog:[],sel:null,q:'',brand:'',view:'list',form:null,
   buy:{q:''},wish:[],confirmFinish:false,scan:null,photoCtx:'',menu:false,confirm:'',importPending:null,loaded:false,storageErr:false};
 
 function t(k,v){
@@ -580,8 +591,22 @@ back:'<path d="M15 5l-7 7 7 7"/>',
 chev:'<path d="M9 5l7 7-7 7"/>',
 x:'<path d="M6 6l12 12M18 6L6 18"/>',
 list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
-shelf:'<path d="M3 9h18M3 20h18M6 9V4h4v5M14 9V6h4v3"/>'
+shelf:'<path d="M3 9h18M3 20h18M6 9V4h4v5M14 9V6h4v3"/>',
+heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'
 };
+var STAR='M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z';
+function starsHTML(n){
+  var o='';for(var i=1;i<=5;i++)o+='<svg class="st'+(i<=n?' on':'')+'" viewBox="0 0 24 24" aria-hidden="true"><path d="'+STAR+'"/></svg>';
+  return '<span class="stars" role="img" aria-label="'+n+'/5">'+o+'</span>';
+}
+function rvLine(r,c,key){
+  var cm=c?(c.length>140?c.slice(0,140)+'...':c):'';
+  return '<div class="rvline"><span class="rvt">'+t(key)+'</span>'+(r?starsHTML(r):'')+(cm?'<span class="rvc">'+esc(cm)+'</span>':'')+'</div>';
+}
+function reviewCard(p){
+  if(!p.rating&&!p.comment)return '<button class="link" data-a="edit" data-id="'+p.id+'" style="align-self:flex-start">'+t('rv_add')+'</button>';
+  return '<section class="rvcard"><span class="eyebrow">'+t('rv_title')+'</span>'+(p.rating?starsHTML(p.rating):'')+(p.comment?'<p>'+esc(p.comment)+'</p>':'')+'</section>';
+}
 function ic(n){return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+IC[n]+'</svg>';}
 
 /* ---------- product illustrations (used when a product has no photo) ---------- */
@@ -615,7 +640,7 @@ function obfCredit(){
   var a='<a href="https://world.openbeautyfacts.org" target="_blank" rel="noopener">Open Beauty Facts</a>',l='<a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL</a>';
   return t('obf_credit_pre')+' '+a+', '+t('obf_credit_mid')+' ('+l+'). '+t('obf_disclaimer');
 }
-function mk(o){return Object.assign({id:'',name:'',brand:'',size:'',cat:'other',img:null,barcode:'',status:'opened',purchased:null,opened:null,pao:null,expiry:null,left:null,src:''},o);}
+function mk(o){return Object.assign({id:'',name:'',brand:'',size:'',cat:'other',img:null,barcode:'',status:'opened',purchased:null,opened:null,pao:null,expiry:null,left:null,src:'',rating:0,comment:''},o);}
 function gkey(p){return norm(p.brand)+'|'+norm(p.name);}
 function byId(id){for(var i=0;i<S.products.length;i++){if(S.products[i].id===id)return S.products[i];}return null;}
 function ser(p){var o=Object.assign({},p);['purchased','opened','expiry'].forEach(function(k){o[k]=p[k]?iso(p[k]):null;});return o;}
@@ -635,6 +660,7 @@ function upsertCatalog(p){
   if(p.pao)entry.pao=String(p.pao);else if(entry.pao==null)entry.pao='';
   if(code)entry.barcode=code;else if(entry.barcode==null)entry.barcode='';
   if(p.img)entry.img=p.img;
+  if(p.rating!=null){entry.rating=p.rating||0;entry.comment=p.comment||'';}
   entry.unsure=false;if(p.src==='obf')entry.src='obf';else if(entry.src==null)entry.src='';
 }
 function fromCat(c){return {name:c.name,brand:c.brand,size:c.size,cat:c.cat,pao:c.pao||'',barcode:c.barcode||'',img:c.img||null,uncertain:c.unsure?['size']:[],banner:'found_banner',src:c.src||''};}
@@ -819,9 +845,9 @@ function addView(){
     '<p class="foot">'+t('add_note')+'</p>';
 }
 
-function blankForm(extra){return Object.assign({mode:'new',id:null,name:'',brand:'',size:'',cat:'',barcode:'',img:null,status:'unopened',opened:'',pao:'',expiry:'',noOpened:false,uncertain:[],banner:null,err:false,src:''},extra||{});}
+function blankForm(extra){return Object.assign({mode:'new',id:null,name:'',brand:'',size:'',cat:'',barcode:'',img:null,status:'unopened',opened:'',pao:'',expiry:'',noOpened:false,uncertain:[],banner:null,err:false,src:'',rating:0,comment:''},extra||{});}
 function formFromProduct(p){
-  return blankForm({mode:'edit',id:p.id,name:p.name,brand:p.brand,size:p.size,cat:p.cat,barcode:p.barcode||'',img:p.img,status:p.status,opened:iso(p.opened),pao:p.pao?String(p.pao):'',expiry:iso(p.expiry),src:p.src||''});
+  return blankForm({mode:'edit',id:p.id,name:p.name,brand:p.brand,size:p.size,cat:p.cat,barcode:p.barcode||'',img:p.img,status:p.status,opened:iso(p.opened),pao:p.pao?String(p.pao):'',expiry:iso(p.expiry),src:p.src||'',rating:p.rating||0,comment:p.comment||''});
 }
 function photoField(f){
   var inner=f.img?'<img src="'+f.img+'" alt="">':bottle(f.cat||'other',100);
@@ -883,6 +909,8 @@ function formView(){
   }
   out+='<div class="field"><label for="f-pao">'+t('pao')+'</label><select id="f-pao" data-f="pao">'+paoOpts+'</select></div>'+
     '<div class="field"><label for="f-exp">'+t('printed')+'</label><input type="date" id="f-exp" data-f="expiry" value="'+esc(f.expiry)+'"></div>'+
+    '<div class="field"><span class="lbl">'+t('rate_label')+'</span><div class="starrow" role="group">'+[1,2,3,4,5].map(function(i){return '<button class="starb'+(i<=f.rating?' on':'')+'" data-a="rate" data-v="'+i+'" aria-pressed="'+(f.rating===i)+'" aria-label="'+i+'">'+'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+STAR+'"/></svg></button>';}).join('')+'</div></div>'+
+    '<div class="field"><label for="f-comment">'+t('comment_label')+'</label><textarea id="f-comment" data-f="comment" rows="3" maxlength="500" placeholder="'+esc(t('comment_ph'))+'">'+esc(f.comment)+'</textarea></div>'+
     '<p class="foot">'+t('min_note')+'</p>'+obfNote+
     '<div class="actions"><button class="btn block" data-a="save">'+t(f.mode==='edit'?'save_changes':'save')+'</button>'+
     (f.mode==='new'?'<button class="btn ghost block" data-a="saveanother">'+t('save_another')+'</button>':'')+
@@ -934,7 +962,7 @@ function detailsView(){
     '<div class="actions"><button class="btn ghost block" data-a="edit" data-id="'+p.id+'">'+ic('pencil')+t('edit')+'</button><button class="btn ghost block" data-a="finish">'+ic('x')+t('finish')+'</button></div>';
   return backHead('')+
     '<div class="hero"><div class="hb'+(p.img?' photo':'')+'" id="hb" style="background:'+tint(p.cat)+'">'+(p.img?'<img src="'+p.img+'" alt="">':bottle(p.cat,p.status==='opened'?lv:100))+'</div><div><h1>'+esc(p.name)+'</h1><p class="sub" style="margin:0">'+esc(p.brand)+(p.size?' · '+esc(p.size):'')+' · '+t('cat_'+(p.cat||'other'))+'</p>'+pstatus(p)+'<button class="link" data-a="pickphoto" data-v="detail">'+t(p.img?'ph_change':'ph_add')+'</button></div></div>'+
-    box+timeline(p)+qty+facts+fin+
+    box+timeline(p)+qty+reviewCard(p)+facts+fin+
     '<button class="link" data-a="buyagain" style="text-align:center;padding:4px 0">'+t('buy_again')+'</button>';
 }
 
@@ -959,9 +987,88 @@ function runSearch(q){
   });
   return {exact:exact,similar:similar};
 }
-function wishBtn(name){
-  var has=S.wish.indexOf(name)>-1;
-  return '<button class="btn ghost" data-a="wish" data-n="'+esc(name)+'"'+(has?' disabled':'')+'>'+(has?t('wish_in'):t('wish_add'))+'</button>';
+function wishNorm(o){
+  if(typeof o==='string')o={name:o};
+  return Object.assign({id:uid2('w'),name:'',brand:'',size:'',cat:'',barcode:'',src:''},o);
+}
+function wishFind(o){
+  var code=normCode(o.barcode),k=gkey(o);
+  for(var i=0;i<S.wish.length;i++){var w=S.wish[i];if((code&&normCode(w.barcode)===code)||gkey(w)===k)return w;}
+  return null;
+}
+function wishAdd(o){
+  o=wishNorm(o);if(!o.name.trim())return false;
+  if(wishFind(o)){toast(t('wish_dup'));return false;}
+  S.wish.unshift(o);toast(t('wish_toast'));return true;
+}
+function wishBtn(o){
+  var has=!!wishFind(wishNorm(o));
+  return '<button class="btn ghost" data-a="wish" data-n="'+esc(o.name)+'" data-b="'+esc(o.brand||'')+'" data-s="'+esc(o.size||'')+'" data-c="'+esc(o.cat||'')+'" data-k="'+esc(o.barcode||'')+'" data-o="'+esc(o.src||'')+'"'+(has?' disabled':'')+'>'+(has?t('wish_in'):t('wish_add'))+'</button>';
+}
+function wishCatalog(w){
+  var code=normCode(w.barcode);
+  for(var i=0;i<S.catalog.length;i++){var c=S.catalog[i];if((code&&normCode(c.barcode)===code)||gkey(c)===gkey(w))return c;}
+  return null;
+}
+function wishOwned(w){
+  var r=null;
+  if(isCode(w.barcode)){r=runSearch(w.barcode);if(r&&r.exact.length)return 'own';}
+  var full=(w.brand+' '+w.name).trim();
+  r=runSearch(full);if(r&&r.exact.length)return 'own';
+  var r2=runSearch(w.name);if(r2&&r2.exact.length)return 'own';
+  if((r&&r.similar.length)||(r2&&r2.similar.length))return 'sim';
+  return '';
+}
+function wishThumb(w){var c=wishCatalog(w);return c?thumb(c):thumb({cat:w.cat||'other',img:null,status:'unopened'});}
+function obfSearch(q){
+  var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort();},8000);
+  return fetch('https://world.openbeautyfacts.org/cgi/search.pl?search_simple=1&action=process&json=1&page_size=6&fields=code,product_name,brands,quantity,categories&search_terms='+encodeURIComponent(q),ctl?{signal:ctl.signal}:{})
+    .then(function(r){clearTimeout(tm);if(!r.ok)throw new Error('http');return r.json();})
+    .then(function(j){return (j&&j.products||[]).filter(function(x){return x&&x.product_name;}).map(function(x){
+      return {code:normCode(x.code),name:String(x.product_name).trim(),brand:String(x.brands||'').split(',')[0].trim(),size:x.quantity||'',cat:guessCat((x.product_name||'')+' '+(x.categories||''))};});})
+    .catch(function(e){clearTimeout(tm);throw e;});
+}
+function wishSugHTML(){
+  var q=S.wq.trim();if(!q)return '';
+  var out='';
+  if(isCode(q)){
+    return '<button class="sug" data-a="wishtype"><div style="padding-left:8px"><b>'+t('wish_code',{q:esc(normCode(q))})+'</b></div></button>';
+  }
+  var items=localMatches(q).filter(function(c){return !wishFind(c);}).slice(0,4);
+  out+=items.map(function(c){
+    var own=wishOwned(c);
+    return '<button class="sug" data-a="wishpick" data-id="'+c.id+'">'+thumb(c)+'<div><b>'+esc(c.name)+'</b><span>'+esc(c.brand)+(c.size?' · '+esc(c.size):'')+' · '+t(own==='own'?'sug_cab':'sug_cat')+'</span></div></button>';
+  }).join('');
+  if(q.length>=3){
+    out+='<button class="link" data-a="wishsearch" style="align-self:flex-start"'+(S.wsearching?' disabled':'')+'>'+t(S.wsearching?'so_busy':'wish_online')+'</button>';
+    if(S.wmsg)out+='<span class="hint">'+t(S.wmsg)+'</span>';
+    if(S.wonline&&S.wonline.length)out+=S.wonline.map(function(o,i){
+      return '<button class="sug" data-a="wishonline" data-i="'+i+'"><div style="padding-left:8px"><b>'+esc(o.name)+'</b><span>'+esc(o.brand)+(o.size?' · '+esc(o.size):'')+'</span></div></button>';
+    }).join('');
+  }
+  out+='<button class="sug" data-a="wishtype"><div style="padding-left:8px"><b>'+t('wish_type',{q:esc(q)})+'</b></div></button>';
+  return out;
+}
+function wishView(){
+  var out=backHead(t('wishlist'))+'<p class="sub" style="margin-top:-8px">'+t('wish_sub')+'</p>'+
+    '<div class="sbar"><label class="search">'+ic('search')+'<input id="wq" type="search" placeholder="'+esc(t('wish_ph'))+'" value="'+esc(S.wq)+'" autocomplete="off"></label>'+
+    '<button class="iconbtn" data-a="wishscan" aria-label="'+t('scan_btn')+'">'+ic('scan')+'</button></div>'+
+    '<div class="sug-list" id="wsug">'+wishSugHTML()+'</div>';
+  if(!S.wish.length)return out+'<p class="empty">'+t('wish_empty2')+'</p>';
+  return out+'<ul class="wlist">'+S.wish.map(function(w){
+    var own=wishOwned(w),chip=own?'<span class="chip '+(own==='own'?'warn':'nd')+'">'+t(own==='own'?'wish_own':'wish_similar')+'</span>':'';
+    return '<li class="wcard"><div class="wtop">'+wishThumb(w)+'<div class="m"><b>'+esc(w.name)+'</b><span>'+esc(w.brand)+(w.size?' · '+esc(w.size):'')+'</span>'+chip+'</div>'+
+      '<button class="iconbtn" data-a="unwish" data-id="'+w.id+'" aria-label="'+t('remove')+'">'+ic('x')+'</button></div>'+
+      '<button class="btn small ghost block" data-a="wishbuy" data-id="'+w.id+'">'+t('wish_bought')+'</button></li>';
+  }).join('')+'</ul>';
+}
+function wishLookupCode(code){
+  S.scan={kind:'lookup'};renderOverlay();
+  lookupOBF(code).then(function(r){
+    S.scan=null;renderOverlay();
+    if(r==='none'||r==='fail'){toast(t(r==='none'?'lk_none':'lk_fail'));return;}
+    wishAdd({name:r.name,brand:r.brand,size:r.size,cat:r.cat,barcode:code,src:'obf'});S.wq='';render(true);
+  });
 }
 function buySugHTML(q){
   var nq=norm(q);if(!nq||isCode(q))return '';
@@ -987,33 +1094,34 @@ function resHTML(){
       var lbl=p.status==='opened'?'<b>'+t('opened')+'</b><em>'+t('left',{n:p.left==null?100:p.left})+'</em>':'<b>'+t('unopened')+'</b>';
       return '<div class="unit"><div class="ub">'+(p.img?'<img src="'+p.img+'" alt="">':bottle(p.cat,p.status==='opened'?p.left:100))+'</div><span>'+lbl+'</span></div>';
     }).join('');
+    var rp=g.items.filter(function(x){return x.rating||x.comment;})[0],rvh=rp?rvLine(rp.rating,rp.comment,'rv_rated'):'';
     out+='<div class="rcard exact"><span class="rbadge">'+t('exact')+'</span><h3>'+esc(g.name)+'</h3><p class="muted" style="margin-top:-8px">'+esc(g.brand)+(first.size?' · '+esc(first.size):'')+'</p>'+
-      '<p class="own">'+t('own_this')+'</p><div class="units">'+units+'</div><p class="muted">'+t('check_first')+'</p>'+
-      '<div class="btns"><button class="btn" data-a="open" data-id="'+first.id+'">'+t('view_cabinet')+'</button>'+wishBtn(g.name)+'</div></div>';
+      '<p class="own">'+t('own_this')+'</p>'+rvh+'<div class="units">'+units+'</div><p class="muted">'+t('check_first')+'</p>'+
+      '<div class="btns"><button class="btn" data-a="open" data-id="'+first.id+'">'+t('view_cabinet')+'</button>'+wishBtn({name:g.name,brand:g.brand,size:first.size,cat:first.cat,barcode:first.barcode})+'</div></div>';
   });
   if(r.similar.length){
     out+='<div class="rcard sim"><span class="rbadge">'+t('similar')+'</span>'+r.similar.map(function(g){
       var f=g.items[0];
       return '<div class="simrow">'+thumb(f)+'<div class="m"><b>'+esc(g.name)+'</b><span>'+esc(g.brand)+(f.size?' · '+esc(f.size):'')+'</span></div><button class="btn small ghost" data-a="open" data-id="'+f.id+'">'+t('view')+'</button></div>';
-    }).join('')+'<p class="muted">'+t('similar_note')+'</p>'+(r.exact.length?'':'<div class="btns">'+wishBtn(q)+'</div>')+'</div>';
+    }).join('')+'<p class="muted">'+t('similar_note')+'</p>'+(r.exact.length?'':'<div class="btns">'+wishBtn({name:q})+'</div>')+'</div>';
   }
   if(!r.exact.length&&!r.similar.length){
     var cm=catMatch(q),code=isCode(q),title=cm?cm.brand+' '+cm.name:(code?t('bc_unknown')+' · '+normCode(q):q);
-    out+='<div class="rcard none"><span class="rbadge">'+t(cm||!code?'not_owned':'bc_unknown')+'</span><div class="nonebox">'+(cm?thumb(cm):'<div class="thumb" style="background:transparent;border:1px dashed var(--line)">'+bottle('other',0)+'</div>')+'<div><h3>'+esc(title)+'</h3><p class="muted">'+t(cm||!code?'not_owned_sub':'bc_unknown_sub')+'</p></div></div>'+
-      '<div class="btns"><button class="btn" data-a="addfrom" data-q="'+esc(q)+'">'+t('add_to_cabinet')+'</button>'+((cm||!code)?wishBtn(cm?cm.name:q):'')+'</div></div>';
+    out+='<div class="rcard none"><span class="rbadge">'+t(cm||!code?'not_owned':'bc_unknown')+'</span><div class="nonebox">'+(cm?thumb(cm):'<div class="thumb" style="background:transparent;border:1px dashed var(--line)">'+bottle('other',0)+'</div>')+'<div><h3>'+esc(title)+'</h3><p class="muted">'+t(cm||!code?'not_owned_sub':'bc_unknown_sub')+'</p></div></div>'+(cm&&(cm.rating||cm.comment)?rvLine(cm.rating,cm.comment,'rv_last'):'')+
+      '<div class="btns"><button class="btn" data-a="addfrom" data-q="'+esc(q)+'">'+t('add_to_cabinet')+'</button>'+((cm||!code)?wishBtn(cm?{name:cm.name,brand:cm.brand,size:cm.size,cat:cm.cat,barcode:cm.barcode,src:cm.src}:{name:q}):'')+'</div></div>';
   }
   return bs+out;
 }
 function buyView(){
-  var wl=S.wish.length?'<div class="wl">'+S.wish.map(function(w){return '<span class="w">'+esc(w)+'<button data-a="unwish" data-n="'+esc(w)+'" aria-label="'+t('remove')+'">'+ic('x')+'</button></span>';}).join('')+'</div>':'<p class="muted">'+t('wish_empty')+'</p>';
-  return '<header><h1>'+t('buy_title')+'</h1><p class="sub">'+t('buy_sub')+'</p></header>'+
+  var n=S.wish.length;
+  return '<header class="head"><div><h1>'+t('buy_title')+'</h1><p class="sub">'+t('buy_sub')+'</p></div></header>'+
     '<div class="sbar"><label class="search">'+ic('search')+'<input id="bq" type="search" placeholder="'+esc(t('buy_ph'))+'" value="'+esc(S.buy.q)+'" autocomplete="off"></label>'+
     '<button class="iconbtn" data-a="buyscan" aria-label="'+t('scan_btn')+'">'+ic('scan')+'</button></div>'+
     '<div class="res" id="res">'+resHTML()+'</div>'+
-    '<section class="sec"><h2>'+t('wishlist')+'</h2>'+wl+'</section>';
+    '<button class="hub tile wtile" data-a="openwish">'+ic('heart')+'<span class="t"><b style="font-family:var(--f-display);font-size:18px;font-weight:600">'+t('wishlist')+(n?' · '+t('wish_n',{n:n}):'')+'</b><span>'+t('wish_open_sub')+'</span></span><span class="arrow">'+ic('chev')+'</span></button>';
 }
 
-var VIEWS={home:homeView,use:useView,add:addView,form:formView,details:detailsView,buy:buyView};
+var VIEWS={wish:wishView,home:homeView,use:useView,add:addView,form:formView,details:detailsView,buy:buyView};
 
 /* ---------- storage on this device (IndexedDB) ---------- */
 var DB='skincare-cabinet',STORE='kv',KEY='state-v1';
@@ -1028,7 +1136,7 @@ function idbGet(k){return idb().then(function(db){return new Promise(function(re
 function idbSet(k,v){return idb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,k);tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});});}
 function payload(){return {app:'skincare-cabinet',version:1,saved:new Date().toISOString(),products:S.products.map(ser),catalog:S.catalog,wish:S.wish,lang:S.lang,view:S.view};}
 function applyPayload(j){
-  S.products=(j.products||[]).map(deser);S.catalog=j.catalog||[];S.wish=j.wish||[];
+  S.products=(j.products||[]).map(deser);S.catalog=j.catalog||[];S.wish=(j.wish||[]).map(wishNorm);
   if(j.lang)S.lang=j.lang;if(j.view)S.view=j.view;
 }
 var saveT=null;
@@ -1173,6 +1281,10 @@ function gotCode(code,ctx){
       else render(true);
     }else if(ctx==='buy'){
       S.buy.q=code;render(true);
+    }else if(ctx==='wish'){
+      var wc2=findByBarcode(code);
+      if(wc2){wishAdd({name:wc2.name,brand:wc2.brand,size:wc2.size,cat:wc2.cat,barcode:wc2.barcode,src:wc2.src});S.wq='';render(true);}
+      else wishLookupCode(code);
     }
   }
 }
@@ -1267,7 +1379,7 @@ function toast(msg){
 function saveForm(another){
   var f=S.form;
   if(!f.name.trim()){f.err=true;render(true);return;}
-  var data={name:f.name.trim(),brand:f.brand.trim(),size:f.size.trim(),cat:f.cat||'other',img:f.img||null,barcode:normCode(f.barcode),status:f.status,src:f.src||'',
+  var data={name:f.name.trim(),brand:f.brand.trim(),size:f.size.trim(),cat:f.cat||'other',img:f.img||null,barcode:normCode(f.barcode),status:f.status,src:f.src||'',rating:f.rating||0,comment:(f.comment||'').trim(),
     opened:(f.status==='opened'&&!f.noOpened)?parseIso(f.opened):null,pao:f.pao?+f.pao:null,expiry:parseIso(f.expiry)};
   if(f.mode==='edit'){
     var p=byId(f.id);Object.assign(p,data);
@@ -1277,6 +1389,7 @@ function saveForm(another){
   }else{
     var np=mk(data);np.id=uid2('p');np.purchased=d0();np.left=np.status==='opened'?100:null;
     S.products.push(np);upsertCatalog(np);
+    if(f.fromWish)S.wish=S.wish.filter(function(w){return w.id!==f.fromWish;});
     if(another){S.form=blankForm();toast(t('added_toast'));render(false);return;}
     S.sel=np.id;S.tab='home';S.hist=[];S.screen='details';toast(t('added_toast'));
   }
@@ -1305,12 +1418,13 @@ document.addEventListener('click',function(e){
     case 'fstatus':S.form.status=v;render(true);break;
     case 'fcat':S.form.cat=(S.form.cat===v?'':v);render(true);break;
     case 'clearform':S.form=blankForm();render(true);break;
+    case 'rate':S.form.rating=(S.form.rating===+v?0:+v);render(true);break;
     case 'save':saveForm(false);break;
     case 'saveanother':saveForm(true);break;
     case 'edit':{var p=byId(id||S.sel);if(p){S.sel=p.id;S.form=formFromProduct(p);go('form');}break;}
     case 'finish':S.confirmFinish=true;render(true);break;
     case 'cancelfinish':S.confirmFinish=false;render(true);break;
-    case 'dofinish':
+    case 'dofinish':{var fp=byId(S.sel);if(fp)upsertCatalog(fp);}
       S.products=S.products.filter(function(p){return p.id!==S.sel;});
       S.sel=null;S.confirmFinish=false;toast(t('finished_toast'));
       S.hist=[];S.screen=S.tab;render(false);break;
@@ -1324,8 +1438,25 @@ document.addEventListener('click',function(e){
       if(!cm&&isCode(q)){lookupInto(normCode(q),false);break;}
       S.form=cm?blankForm(fromCat(cm)):blankForm({name:q});
       go('form');break;}
-    case 'wish':if(S.wish.indexOf(el.dataset.n)<0)S.wish.push(el.dataset.n);toast(t('wish_toast'));render(true);break;
-    case 'unwish':S.wish=S.wish.filter(function(w){return w!==el.dataset.n;});render(true);break;
+    case 'wish':wishAdd({name:el.dataset.n,brand:el.dataset.b,size:el.dataset.s,cat:el.dataset.c,barcode:el.dataset.k,src:el.dataset.o});render(true);break;
+    case 'unwish':S.wish=S.wish.filter(function(w){return w.id!==id;});render(true);break;
+    case 'openwish':S.wq='';S.wonline=null;S.wmsg='';go('wish');break;
+    case 'wishscan':startLive('wish');break;
+    case 'wishpick':{var wc=catById(id);if(wc){wishAdd({name:wc.name,brand:wc.brand,size:wc.size,cat:wc.cat,barcode:wc.barcode,src:wc.src});S.wq='';S.wonline=null;S.wmsg='';render(true);}break;}
+    case 'wishonline':{var wo=S.wonline&&S.wonline[+el.dataset.i];if(wo){wishAdd({name:wo.name,brand:wo.brand,size:wo.size,cat:wo.cat,barcode:wo.code,src:'obf'});S.wq='';S.wonline=null;S.wmsg='';render(true);}break;}
+    case 'wishtype':{var wt=S.wq.trim();if(isCode(wt)){wishLookupCode(normCode(wt));}else if(wt){wishAdd({name:wt});S.wq='';S.wonline=null;S.wmsg='';render(true);}break;}
+    case 'wishsearch':{
+      var wq2=S.wq.trim();if(wq2.length<3||S.wsearching)break;
+      S.wsearching=true;S.wmsg='';render(true);
+      obfSearch(wq2).then(function(arr){S.wsearching=false;S.wonline=arr;S.wmsg=arr.length?'':'so_none';if(S.screen==='wish')render(true);})
+        .catch(function(){S.wsearching=false;S.wonline=null;S.wmsg='so_err';if(S.screen==='wish')render(true);});
+      break;}
+    case 'wishbuy':{
+      var ww=null;S.wish.forEach(function(x){if(x.id===id)ww=x;});
+      if(ww){var cc=wishCatalog(ww);
+        S.form=cc?blankForm(fromCat(cc)):blankForm({name:ww.name,brand:ww.brand,size:ww.size,cat:ww.cat||'',barcode:ww.barcode||'',src:ww.src||''});
+        S.form.fromWish=ww.id;go('form');}
+      break;}
     case 'lang':S.lang=v;render(true);break;
     case 'pickcat':{var pc=catById(id);if(pc){S.form=blankForm(fromCat(pc));render(true);}break;}
     case 'pickphoto':S.photoCtx=v;$('#pf').click();break;
@@ -1352,6 +1483,7 @@ document.addEventListener('input',function(e){
   var el=e.target;
   if(el.id==='q'){S.q=el.value;$('#list').innerHTML=listHTML();return;}
   if(el.id==='bq'){S.buy.q=el.value;$('#res').innerHTML=resHTML();return;}
+  if(el.id==='wq'){S.wq=el.value;S.wonline=null;S.wmsg='';$('#wsug').innerHTML=wishSugHTML();return;}
   if(el.id==='rng'){
     var p=byId(S.sel);
     if(p){p.left=+el.value;$('#rngv').textContent=el.value+'%';if(!p.img)$('#hb').innerHTML=bottle(p.cat,p.left);}
